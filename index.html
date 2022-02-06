@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Envios</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="clientes">
+        <h1>Lista de Clientes</h1>
+    </div>
+    <div class="addcliente">
+        <form method="post" class="formData">
+            <label>Índice </label><input type="number" name="indice">
+            <label>Nome </label><input type="text" name="nome">
+            <label>Horário </label><input type="datetime" name="horario">
+            <label>Gestor </label><input type="text" name="gestor">
+            <input type="submit" id="enviar" class="pushData" value="Enviar">
+        </form>
+    </div>
+    <div id="gestor">
+        Seu Nome: <input type="text" name="gestor" id="nomegestor"><input type="submit" onclick="pegaGestor()" value="Enviar">
+    </div>
+
+    <script>
+
+        var enviar = document.getElementById("enviar")
+        var inputs = document.querySelectorAll("input")
+        enviar.addEventListener('click', function (){
+            for(let i=0; i < 4; i++){
+                localStorage.setItem(inputs[i].name, inputs[i].value)
+            }
+        })
+
+        /*var nomegestor = document.querySelector("#nomegestor")
+        
+        function pegaGestor(){
+            
+        }
+
+        function getUserById(id) {
+            return JSON.parse(localStorage.getItem('users')).filter(users => users.id === id)
+        }*/
+
+        var cliente = {
+            Indice: [1, 2, 3, 4],
+            Nome: ["Cliente1", "Cliente2", "Cliente3", "Cliente4"],
+            Horario: ["09:00", "10:00", "11:00", "10:00"],
+            Gestor: ["Paulo", "Clara", "Pedro", "Paulo"]
+        };
+
+        for (var i = 0; i < cliente.Indice.length; i++) {
+            var lista = document.querySelector("#clientes")
+            cliente.Horario.sort();
+            lista.innerHTML += `<input type="checkbox" id=` + cliente.Indice[i] + ` onchange="obterMarcados()"> `;
+            lista.innerHTML += cliente.Nome[i] + " - " + cliente.Horario[i] + " - " + cliente.Gestor[i] + "<label class='enviado' id='enviado'></label>";
+            lista.innerHTML += "<br>";
+        }
+
+
+        /*for (var i = 0; i < cliente.Indice.length; i++) {
+            var checkbox = document.getElementById(cliente.Indice[i])
+            var itens = [];
+            itens.push(checkbox[i])
+            var paragrafoEnviado = document.getElementById("enviado")
+            checkbox.addEventListener('change', function () {
+                if (checkbox.checked == true) {
+                    paragrafoEnviado.innerHTML = " - <strong>Enviado</strong>";
+                } else {
+                    paragrafoEnviado.innerHTML = '';
+                }
+            })
+        }*/
+
+
+        function obterMarcados() {
+            var listaMarcados = document.getElementsByTagName("INPUT");
+            var teste = document.getElementsByTagName("label")
+            var testeclasse = document.getElementsByClassName("enviado")
+
+            for (loop = 0; loop < listaMarcados.length; loop++) {
+                var item = listaMarcados[loop];
+                if (item.type == "checkbox" && item.checked) {
+                    //testeclasse[loop].innerHTML = " - <strong>Enviado</strong>"
+                    localStorage.setItem("status", "Enviado");
+                    testeclasse[loop].innerHTML = "<strong> - "+ localStorage.getItem("status"); + "</strong>";
+                } else {
+                    //testeclasse[loop].innerHTML = ""
+                    localStorage.setItem("status", "");
+                    testeclasse[loop].innerHTML = "<strong>"+ localStorage.getItem("status"); + "</strong>";
+                }
+            }
+        }
+
+    </script>
+</body>
+</html>
